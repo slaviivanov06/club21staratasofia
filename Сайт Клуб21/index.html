@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="bg" data-lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#1a1714">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Club 21 – Стара София | Ресторант в Бояна</title>
+  <meta name="description" content="Традиционен ресторант с домашна атмосфера в Бояна, София. Резервации на телефон.">
+  
+  <!-- Preload Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ══════════════════════════════════════════════════════════════════════════
+       CSS VARIABLES - DESIGN TOKENS
+       ══════════════════════════════════════════════════════════════════════════ */
+    :root {
+      /* Colors - Warm Neutrals */
+      --coal: #1a1714;
+      --coal-soft: #2d2825;
+      --parchment: #f4f1eb;
+      --parchment-dark: #e8e4dc;
+      --stone: #8a8279;
+      --stone-light: #b5aea3;
+      
+      /* Colors - Amber Warmth */
+      --amber: #c9a962;
+      --amber-glow: #d4b978;
+      --ember: #a67c52;
+      --hearth: #8b5e3c;
+      
+      /* Atmospheric Overlays */
+      --veil-dark: rgba(26, 23, 20, 0.75);
+      --veil-light: rgba(244, 241, 235, 0.03);
+      --warmth: rgba(201, 169, 98, 0.08);
+      
+      /* Typography */
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Spectral', Georgia, serif;
+      
+      /* Spacing */
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 40px;
+      --space-xl: 80px;
+      --space-2xl: 120px;
+      
+      /* Transitions */
+      --ease-gentle: cubic-bezier(0.25, 0.1, 0.25, 1);
+      --duration-fast: 0.3s;
+      --duration-medium: 0.5s;
+      --duration-slow: 0.8s;
+      
+      /* Container */
+      --container-max: 1200px;
+      --content-max: 680px;
+      
+      /* Living Light Effect */
+      --living-light-brightness: 1;
+      --living-light-warmth: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       BASE RESET & TYPOGRAPHY
+       ══════════════════════════════════════════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--stone);
+      background-color: var(--coal);
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--parchment);
+    }
+
+    p {
+      max-width: var(--content-max);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       LANGUAGE SWITCHING
+       ══════════════════════════════════════════════════════════════════════════ */
+    .lang-text {
+      transition: opacity var(--duration-medium) var(--ease-gentle);
+    }
+
+    html[data-lang="bg"] .lang-text[data-lang="en"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    html[data-lang="en"] .lang-text[data-lang="bg"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    html[data-lang="bg"] .lang-text[data-lang="bg"],
+    html[data-lang="en"] .lang-text[data-lang="en"] {
+      position: relative;
+      opacity: 1;
+    }
+
+    .lang-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       HEADER & NAVIGATION
+       ══════════════════════════════════════════════════════════════════════════ */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: var(--space-md) var(--space-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: transparent;
+      transition: background var(--duration-medium) var(--ease-gentle),
+                  transform var(--duration-medium) var(--ease-gentle);
+    }
+
+    .header.scrolled {
+      background: rgba(26, 23, 20, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .header.hidden {
+      transform: translateY(-100%);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--parchment);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+    }
+
+    .lang-option {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      letter-spacing: 0.1em;
+      color: var(--stone);
+      transition: color var(--duration-fast) var(--ease-gentle);
+    }
+
+    html[data-lang="bg"] .lang-option[data-lang="bg"],
+    html[data-lang="en"] .lang-option[data-lang="en"] {
+      color: var(--amber);
+    }
+
+    .lang-divider {
+      color: var(--stone-light);
+      opacity: 0.5;
+    }
+
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: var(--space-xs);
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--parchment);
+      transition: transform var(--duration-fast) var(--ease-gentle),
+                  opacity var(--duration-fast) var(--ease-gentle);
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(4px, 4px);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(4px, -4px);
+    }
+
+    /* Mobile Menu Overlay */
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--coal);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-lg);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--duration-medium) var(--ease-gentle);
+    }
+
+    .menu-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu-overlay nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .menu-overlay a {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--parchment);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--duration-medium) var(--ease-gentle),
+                  transform var(--duration-medium) var(--ease-gentle),
+                  color var(--duration-fast) var(--ease-gentle);
+    }
+
+    .menu-overlay.active a {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .menu-overlay a:nth-child(1) { transition-delay: 0.1s; }
+    .menu-overlay a:nth-child(2) { transition-delay: 0.15s; }
+    .menu-overlay a:nth-child(3) { transition-delay: 0.2s; }
+    .menu-overlay a:nth-child(4) { transition-delay: 0.25s; }
+
+    .menu-overlay a:hover {
+      color: var(--amber);
+    }
+
+    .menu-phone {
+      margin-top: var(--space-lg);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+      opacity: 0;
+      transition: opacity var(--duration-medium) var(--ease-gentle);
+      transition-delay: 0.35s;
+    }
+
+    .menu-overlay.active .menu-phone {
+      opacity: 1;
+    }
+
+    /* Desktop Navigation */
+    @media (min-width: 768px) {
+      .header {
+        padding: var(--space-md) var(--space-lg);
+      }
+
+      .menu-toggle {
+        display: none;
+      }
+
+      .desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: var(--space-lg);
+      }
+
+      .desktop-nav a {
+        font-family: var(--font-display);
+        font-size: 0.875rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--parchment);
+        position: relative;
+      }
+
+      .desktop-nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: var(--amber);
+        opacity: 0;
+        transform: scaleX(0.3);
+        transform-origin: left;
+        transition: opacity var(--duration-fast) ease,
+                    transform var(--duration-fast) var(--ease-gentle);
+      }
+
+      .desktop-nav a:hover::after {
+        opacity: 0.6;
+        transform: scaleX(1);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .desktop-nav {
+        display: none;
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       HERO SECTION
+       ══════════════════════════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-background {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero-background::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(to bottom, 
+          rgba(26, 23, 20, 0.3) 0%,
+          rgba(26, 23, 20, 0.1) 30%,
+          rgba(26, 23, 20, 0.4) 70%,
+          rgba(26, 23, 20, 0.8) 100%
+        );
+      z-index: 2;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.9) saturate(0.9);
+    }
+
+    .hero-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(5px) brightness(0.85) saturate(0.9);
+      transform: scale(1.08); /* Prevents blur edge artifacts */
+    }
+
+    /* Fireplace Glow Effect */
+    .fireplace-glow {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+    }
+
+    .glow-base {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 100% 70% at 50% 100%,
+        rgba(201, 139, 62, 0.2) 0%,
+        rgba(201, 139, 62, 0.08) 30%,
+        transparent 60%
+      );
+    }
+
+    .glow-flicker-1 {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 80% 50% at 48% 95%,
+        rgba(212, 160, 80, 0.15) 0%,
+        transparent 45%
+      );
+      animation: flicker-1 4s ease-in-out infinite;
+    }
+
+    .glow-flicker-2 {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 60% 40% at 52% 98%,
+        rgba(180, 100, 50, 0.1) 0%,
+        transparent 40%
+      );
+      animation: flicker-2 3s ease-in-out infinite;
+    }
+
+    @keyframes flicker-1 {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      25% { opacity: 0.8; transform: scale(0.98); }
+      50% { opacity: 0.95; transform: scale(1.02); }
+      75% { opacity: 0.85; transform: scale(0.99); }
+    }
+
+    @keyframes flicker-2 {
+      0%, 100% { opacity: 0.8; transform: scale(1) translateX(0); }
+      33% { opacity: 1; transform: scale(1.03) translateX(2px); }
+      66% { opacity: 0.65; transform: scale(0.97) translateX(-1px); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: var(--space-md);
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--parchment);
+      margin-bottom: var(--space-xs);
+    }
+
+    .hero-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--amber);
+      margin: var(--space-md) auto;
+      opacity: 0.7;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-weight: 500;
+      font-style: italic;
+      letter-spacing: 0.15em;
+      color: var(--parchment);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Scroll indicator removed */
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       SECTION TRANSITIONS (Old Cinema Effect)
+       ══════════════════════════════════════════════════════════════════════════ */
+    .section {
+      filter: brightness(var(--living-light-brightness)) sepia(var(--living-light-warmth));
+      transition: filter var(--duration-slow) var(--ease-gentle);
+      overflow: hidden;
+      max-width: 100vw;
+    }
+
+    .section-transition {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--duration-slow) var(--ease-gentle),
+                  transform var(--duration-slow) var(--ease-gentle);
+    }
+
+    .section-transition.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       TYPOGRAPHY WITH BREATH
+       ══════════════════════════════════════════════════════════════════════════ */
+    .breath-text {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s var(--ease-gentle) var(--breath-delay, 0ms),
+                  transform 0.7s var(--ease-gentle) var(--breath-delay, 0ms);
+    }
+
+    .breath-container.visible .breath-text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .breath-container .breath-text:nth-child(1) { --breath-delay: 0ms; }
+    .breath-container .breath-text:nth-child(2) { --breath-delay: 100ms; }
+    .breath-container .breath-text:nth-child(3) { --breath-delay: 200ms; }
+    .breath-container .breath-text:nth-child(4) { --breath-delay: 300ms; }
+    .breath-container .breath-text:nth-child(5) { --breath-delay: 400ms; }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       INTRODUCTION SECTION
+       ══════════════════════════════════════════════════════════════════════════ */
+    .intro {
+      background: var(--parchment);
+      padding: var(--space-2xl) var(--space-md);
+      text-align: center;
+    }
+
+    .intro-content {
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+
+    .intro-headline {
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-weight: 300;
+      color: var(--coal);
+      line-height: 1.4;
+      margin-bottom: var(--space-lg);
+    }
+
+    .intro-divider {
+      width: 80px;
+      height: 1px;
+      background: var(--amber);
+      margin: var(--space-lg) auto;
+    }
+
+    .intro-text {
+      font-size: 1.125rem;
+      color: var(--coal-soft);
+      line-height: 1.8;
+      margin: 0 auto;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       GALLERY SECTION
+       ══════════════════════════════════════════════════════════════════════════ */
+    .gallery {
+      background: var(--coal-soft);
+      background-image: url('images/gallery-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      padding: var(--space-2xl) var(--space-md);
+    }
+
+    .gallery::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(26, 23, 20, 0.6);
+    }
+
+    .gallery-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 180px;
+      gap: 12px;
+      max-width: var(--container-max);
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      position: relative;
+      border: 4px solid #5c3d2e;
+      border-radius: 2px;
+      box-shadow: 
+        inset 0 0 0 1px #8b5e3c,
+        0 4px 20px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      transition: transform var(--duration-medium) var(--ease-gentle),
+                  box-shadow var(--duration-medium) var(--ease-gentle);
+    }
+
+    /* Asymmetric grid positions - 8 images */
+    .gallery-item:nth-child(1) {
+      grid-column: 1 / 6;
+      grid-row: 1 / 4;
+    }
+
+    .gallery-item:nth-child(2) {
+      grid-column: 6 / 10;
+      grid-row: 1 / 3;
+    }
+
+    .gallery-item:nth-child(3) {
+      grid-column: 10 / 13;
+      grid-row: 1 / 4;
+    }
+
+    .gallery-item:nth-child(4) {
+      grid-column: 6 / 9;
+      grid-row: 4 / 7;
+    }
+
+    @media (min-width: 768px) {
+      .gallery-item:nth-child(4) {
+        transform: translateY(-90px);
+      }
+    }
+
+    .gallery-item:nth-child(5) {
+      grid-column: 1 / 6;
+      grid-row: 4 / 7;
+    }
+
+    .gallery-item:nth-child(6) {
+      grid-column: 9 / 13;
+      grid-row: 4 / 7;
+    }
+
+    .gallery-item:nth-child(7) {
+      grid-column: 1 / 9;
+      grid-row: 7 / 10;
+    }
+
+    .gallery-item:nth-child(8) {
+      grid-column: 9 / 13;
+      grid-row: 7 / 10;
+    }
+
+    /* Mobile: simpler layout */
+    @media (max-width: 767px) {
+      .gallery {
+        padding: var(--space-lg) var(--space-sm);
+      }
+
+      .gallery-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .gallery-item {
+        width: 100%;
+        height: 250px;
+        grid-column: auto !important;
+        grid-row: auto !important;
+        transform: none !important;
+      }
+
+      .gallery-item:nth-child(3),
+      .gallery-item:nth-child(5),
+      .gallery-item:nth-child(6) {
+        height: 400px;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.02);
+      box-shadow: 
+        inset 0 0 0 1px #8b5e3c,
+        0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      transition: filter var(--duration-medium) var(--ease-gentle);
+    }
+
+    /* Individual image positioning - adjust as needed */
+    .gallery-item:nth-child(1) img { object-position: center center; }
+    .gallery-item:nth-child(2) img { object-position: center center; }
+    .gallery-item:nth-child(3) img { object-position: center center; }
+    .gallery-item:nth-child(4) img { object-position: center center; }
+    .gallery-item:nth-child(5) img { object-position: center center; }
+    .gallery-item:nth-child(6) img { object-position: center center; }
+    .gallery-item:nth-child(7) img { object-position: center center; }
+    .gallery-item:nth-child(8) img { object-position: center center; }
+
+    .gallery-item:hover img {
+      filter: brightness(1.05);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       ABOUT SECTION
+       ══════════════════════════════════════════════════════════════════════════ */
+    .about {
+      background: var(--parchment-dark);
+      padding: var(--space-2xl) var(--space-md);
+    }
+
+    .about-container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      display: grid;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .about-container {
+        grid-template-columns: 1fr 1.2fr;
+        gap: var(--space-2xl);
+      }
+    }
+
+    .about-image {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: sepia(0.05);
+    }
+
+    .about-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        transparent 60%,
+        rgba(201, 169, 98, 0.1) 100%
+      );
+    }
+
+    .about-content {
+      padding: var(--space-md) 0;
+    }
+
+    .about-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      color: var(--coal);
+      margin-bottom: var(--space-md);
+    }
+
+    .about-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--amber);
+      margin-bottom: var(--space-lg);
+    }
+
+    .about-text {
+      color: var(--coal-soft);
+      line-height: 1.9;
+    }
+
+    .about-text p {
+      margin-bottom: 1.5em;
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       RESERVATIONS SECTION
+       ══════════════════════════════════════════════════════════════════════════ */
+    .reservations {
+      background: var(--coal);
+      padding: var(--space-2xl) var(--space-md);
+      text-align: center;
+    }
+
+    .reservations-content {
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+
+    .reservations-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      margin-bottom: var(--space-xs);
+    }
+
+    .reservations-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--amber);
+      margin: var(--space-md) auto var(--space-lg);
+      opacity: 0.7;
+    }
+
+    .reservations-cta {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 300;
+      color: var(--stone-light);
+      margin-bottom: var(--space-md);
+    }
+
+    .phone-number {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+      padding: var(--space-sm) var(--space-lg);
+      border: 1px solid rgba(201, 169, 98, 0.3);
+      margin-bottom: var(--space-lg);
+      transition: border-color var(--duration-fast) var(--ease-gentle),
+                  background var(--duration-fast) var(--ease-gentle);
+    }
+
+    .phone-number:hover {
+      border-color: var(--amber);
+      background: rgba(201, 169, 98, 0.05);
+    }
+
+    .reservations-info {
+      font-size: 0.9375rem;
+      color: var(--stone);
+      line-height: 1.8;
+    }
+
+    .reservations-info p {
+      margin: 0 auto;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       TESTIMONIALS SECTION
+       ══════════════════════════════════════════════════════════════════════════ */
+    .testimonials {
+      background: var(--parchment);
+      padding: var(--space-2xl) var(--space-md);
+    }
+
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .testimonials-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--coal);
+      margin-bottom: var(--space-sm);
+    }
+
+    .testimonials-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--amber);
+      margin: 0 auto;
+    }
+
+    .testimonials-grid {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      display: grid;
+      gap: var(--space-xl);
+    }
+
+    @media (min-width: 768px) {
+      .testimonials-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-lg);
+      }
+    }
+
+    .testimonial {
+      text-align: center;
+      padding: var(--space-md);
+    }
+
+    .testimonial-quote {
+      position: relative;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--coal-soft);
+      line-height: 1.8;
+      margin-bottom: var(--space-md);
+    }
+
+    .testimonial-quote::before {
+      content: '"';
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-style: normal;
+      color: var(--amber);
+      opacity: 0.5;
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .testimonial-author {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--stone);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       FOOTER
+       ══════════════════════════════════════════════════════════════════════════ */
+    .footer {
+      background: var(--coal);
+      padding: var(--space-xl) var(--space-md);
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--parchment);
+      margin-bottom: var(--space-md);
+    }
+
+    .footer-info {
+      font-size: 0.875rem;
+      color: var(--stone);
+      line-height: 1.8;
+      margin-bottom: var(--space-lg);
+      text-align: center;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-info p {
+      margin: 0;
+    }
+
+    .footer-info .lang-container {
+      display: block;
+    }
+
+    .footer-divider {
+      width: 100%;
+      max-width: 200px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: var(--space-lg) auto;
+    }
+
+    .footer-bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: 0.75rem;
+      color: var(--stone-light);
+    }
+
+    .footer-lang {
+      display: flex;
+      gap: var(--space-xs);
+    }
+
+    .footer-lang button {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--stone);
+      transition: color var(--duration-fast) var(--ease-gentle);
+    }
+
+    html[data-lang="bg"] .footer-lang button[data-lang="bg"],
+    html[data-lang="en"] .footer-lang button[data-lang="en"] {
+      color: var(--amber);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       REDUCED MOTION
+       ══════════════════════════════════════════════════════════════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      .glow-flicker-1,
+      .glow-flicker-2 {
+        animation: none;
+      }
+
+      .section-transition {
+        opacity: 1;
+        transform: none;
+      }
+
+      .breath-text {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       MOBILE OPTIMIZATIONS
+       ══════════════════════════════════════════════════════════════════════════ */
+    @media (max-width: 767px) {
+      /* Better touch targets */
+      .lang-toggle,
+      .menu-toggle,
+      .phone-number,
+      .desktop-nav a,
+      .menu-overlay a {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Smaller padding on mobile */
+      .intro,
+      .about,
+      .reservations,
+      .testimonials {
+        padding: var(--space-xl) var(--space-sm);
+      }
+
+      /* Adjust typography for mobile */
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+
+      /* Disable hover effects on touch */
+      .gallery-item:hover {
+        transform: none;
+      }
+
+      .gallery-item:active {
+        transform: scale(0.98);
+      }
+
+      /* Better tap feedback */
+      .phone-number:active,
+      .menu-overlay a:active {
+        opacity: 0.7;
+      }
+
+      /* Fix video performance on mobile */
+      .hero-video {
+        filter: blur(4px) brightness(0.85) saturate(0.9);
+      }
+
+      /* Ensure text is readable */
+      .about-text,
+      .intro-text,
+      .testimonial-quote {
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+    }
+
+    /* Small phones */
+    @media (max-width: 375px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .phone-number {
+        font-size: 1.25rem;
+        padding: var(--space-sm);
+      }
+
+      .gallery-grid {
+        gap: var(--space-xs);
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       MOBILE LIGHTBOX
+       ══════════════════════════════════════════════════════════════════════════ */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.95);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-image {
+      max-width: 95%;
+      max-height: 85vh;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 2001;
+    }
+
+    .lightbox-close::before,
+    .lightbox-close::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 24px;
+      height: 2px;
+      background: var(--parchment);
+    }
+
+    .lightbox-close::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .lightbox-close::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-nav::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-top: 2px solid var(--parchment);
+      border-right: 2px solid var(--parchment);
+    }
+
+    .lightbox-prev {
+      left: 15px;
+    }
+
+    .lightbox-prev::before {
+      transform: rotate(-135deg);
+      margin-left: 4px;
+    }
+
+    .lightbox-next {
+      right: 15px;
+    }
+
+    .lightbox-next::before {
+      transform: rotate(45deg);
+      margin-right: 4px;
+    }
+
+    .lightbox-counter {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      color: var(--parchment);
+      letter-spacing: 0.1em;
+    }
+
+    /* Only show on mobile */
+    @media (min-width: 768px) {
+      .lightbox {
+        display: none !important;
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       PLACEHOLDER IMAGES (Remove in production)
+       ══════════════════════════════════════════════════════════════════════════ */
+    .placeholder-img {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        var(--coal-soft) 0%,
+        var(--coal) 50%,
+        var(--coal-soft) 100%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--stone);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       HEADER
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <header class="header" id="header">
+    <a href="#" class="logo">Club 21</a>
+    
+    <div class="header-right">
+      <nav class="desktop-nav">
+        <a href="#intro">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">Начало</span>
+            <span class="lang-text" data-lang="en">Home</span>
+          </span>
+        </a>
+        <a href="#gallery">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">Галерия</span>
+            <span class="lang-text" data-lang="en">Gallery</span>
+          </span>
+        </a>
+        <a href="#about">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">За нас</span>
+            <span class="lang-text" data-lang="en">About</span>
+          </span>
+        </a>
+        <a href="#reservations">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">Резервации</span>
+            <span class="lang-text" data-lang="en">Reservations</span>
+          </span>
+        </a>
+      </nav>
+      
+      <button class="lang-toggle" aria-label="Switch language">
+        <span class="lang-option" data-lang="bg">БГ</span>
+        <span class="lang-divider">·</span>
+        <span class="lang-option" data-lang="en">EN</span>
+      </button>
+      
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay">
+    <nav>
+      <a href="#intro" class="menu-link">
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">Начало</span>
+          <span class="lang-text" data-lang="en">Home</span>
+        </span>
+      </a>
+      <a href="#gallery" class="menu-link">
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">Галерия</span>
+          <span class="lang-text" data-lang="en">Gallery</span>
+        </span>
+      </a>
+      <a href="#about" class="menu-link">
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">За нас</span>
+          <span class="lang-text" data-lang="en">About</span>
+        </span>
+      </a>
+      <a href="#reservations" class="menu-link">
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">Резервации</span>
+          <span class="lang-text" data-lang="en">Reservations</span>
+        </span>
+      </a>
+    </nav>
+    <a href="tel:+359888834278" class="menu-phone">088 883 4278</a>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       HERO SECTION
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <section class="hero section" id="hero">
+    <div class="hero-background">
+      <!-- 4K Fireplace Loop Video -->
+      <video 
+        class="hero-video" 
+        autoplay 
+        muted 
+        loop 
+        playsinline
+        preload="metadata"
+        poster="video/fireplace-poster.jpg"
+      >
+        <source src="video/fireplace-4k.mp4" type="video/mp4">
+        <source src="video/fireplace-4k.webm" type="video/webm">
+      </video>
+    </div>
+    
+    <!-- Fireplace Glow Effect -->
+    <div class="fireplace-glow">
+      <div class="glow-base"></div>
+      <div class="glow-flicker-1"></div>
+      <div class="glow-flicker-2"></div>
+    </div>
+    
+    <div class="hero-content">
+      <h1 class="hero-title">Club 21</h1>
+      <div class="hero-divider"></div>
+      <p class="hero-subtitle">
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">Старата София</span>
+          <span class="lang-text" data-lang="en">Old Sofia</span>
+        </span>
+      </p>
+    </div>
+    
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       INTRODUCTION SECTION
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <section class="intro section section-transition" id="intro">
+    <div class="intro-content breath-container">
+      <h2 class="intro-headline breath-text">
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">В сърцето на Бояна,<br>където времето тече по-бавно</span>
+          <span class="lang-text" data-lang="en">In the heart of Boyana,<br>where time moves a little slower</span>
+        </span>
+      </h2>
+      <div class="intro-divider breath-text"></div>
+      <p class="intro-text breath-text">
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">Място, където вечерята не е просто хранене, а завръщане. Към топлината на истинския дом, към спокойствието на добрата компания, към вкусовете, които помним от детството.</span>
+          <span class="lang-text" data-lang="en">A place where dinner is not simply a meal, but a return. To the warmth of a true home, to the calm of good company, to the flavors we remember from childhood.</span>
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       GALLERY SECTION
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <section class="gallery section section-transition" id="gallery">
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="images/gallery/image-1.jpg" alt="Club 21 интериор">
+      </div>
+      <div class="gallery-item">
+        <img src="images/gallery/image-2.jpg" alt="Club 21 атмосфера">
+      </div>
+      <div class="gallery-item">
+        <img src="images/gallery/image-3.jpg" alt="Club 21 детайли">
+      </div>
+      <div class="gallery-item">
+        <img src="images/gallery/image-4.jpg" alt="Club 21 ястия">
+      </div>
+      <div class="gallery-item">
+        <img src="images/gallery/image-5.jpg" alt="Club 21 обстановка">
+      </div>
+      <div class="gallery-item">
+        <img src="images/gallery/image-6.jpg" alt="Club 21 уют">
+      </div>
+      <div class="gallery-item">
+        <img src="images/gallery/image-7.jpg" alt="Club 21 панорама">
+      </div>
+      <div class="gallery-item">
+        <img src="images/gallery/image-8.jpg" alt="Club 21 момент">
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       ABOUT SECTION
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <section class="about section section-transition" id="about">
+    <div class="about-container">
+      <div class="about-image">
+        <img src="images/about/about.jpg" alt="Club 21 Стара София">
+      </div>
+      <div class="about-content breath-container">
+        <h2 class="about-title breath-text">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">Нашата история</span>
+            <span class="lang-text" data-lang="en">Our Story</span>
+          </span>
+        </h2>
+        <div class="about-divider breath-text"></div>
+        <div class="about-text">
+          <p class="breath-text">
+            <span class="lang-container">
+              <span class="lang-text" data-lang="bg">Club 21 не е просто ресторант. Това е продължение на един дом, отворен за приятели — стари и нови. Тук, в тихите улици на Бояна, далеч от градския шум, сме създали пространство, където всяка вечер е като събиране на семейство.</span>
+              <span class="lang-text" data-lang="en">Club 21 is not simply a restaurant. It is an extension of a home, open to friends — old and new. Here, in the quiet streets of Boyana, away from the city noise, we have created a space where every evening feels like a family gathering.</span>
+            </span>
+          </p>
+          <p class="breath-text">
+            <span class="lang-container">
+              <span class="lang-text" data-lang="bg">Готвим така, както са готвили нашите баби — с търпение, с любов, с уважение към продуктите. Без бързане, без компромиси. Защото истински хубавото ястие не се създава за минути.</span>
+              <span class="lang-text" data-lang="en">We cook as our grandmothers did — with patience, with love, with respect for ingredients. No rushing, no compromises. Because truly good food cannot be created in minutes.</span>
+            </span>
+          </p>
+          <p class="breath-text">
+            <span class="lang-container">
+              <span class="lang-text" data-lang="bg">Камината гори, масите са застлани, чаша вино чака. Добре дошли у дома.</span>
+              <span class="lang-text" data-lang="en">The fireplace burns, the tables are set, a glass of wine awaits. Welcome home.</span>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       RESERVATIONS SECTION
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <section class="reservations section section-transition" id="reservations">
+    <div class="reservations-content breath-container">
+      <h2 class="reservations-title breath-text">
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">Резервации</span>
+          <span class="lang-text" data-lang="en">Reservations</span>
+        </span>
+      </h2>
+      <div class="reservations-divider breath-text"></div>
+      <p class="reservations-cta breath-text">
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">Обадете ни се</span>
+          <span class="lang-text" data-lang="en">Call us</span>
+        </span>
+      </p>
+      <a href="tel:+359888834278" class="phone-number breath-text">088 883 4278</a>
+      <div class="reservations-info breath-text">
+        <p>
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">Ежедневно от 12:00 до 23:00</span>
+            <span class="lang-text" data-lang="en">Daily from 12:00 to 23:00</span>
+          </span>
+        </p>
+        <p>
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">Бояна, ул. Околовръстен път 51</span>
+            <span class="lang-text" data-lang="en">51 Okolovrasten pat Street, Boyana</span>
+          </span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       TESTIMONIALS SECTION
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <section class="testimonials section section-transition" id="testimonials">
+    <div class="testimonials-header breath-container">
+      <h2 class="testimonials-title breath-text">
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">Отзиви от нашите гости</span>
+          <span class="lang-text" data-lang="en">Words from our guests</span>
+        </span>
+      </h2>
+      <div class="testimonials-divider breath-text"></div>
+    </div>
+    
+    <div class="testimonials-grid">
+      <div class="testimonial section-transition">
+        <blockquote class="testimonial-quote">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">Влизаш и сякаш се прибираш. Не знам как го правят, но тук човек забравя, че е в ресторант. Просто си у дома, при хора, които искат да ти е хубаво.</span>
+            <span class="lang-text" data-lang="en">You walk in and it feels like coming home. I don't know how they do it, but here you forget you're in a restaurant. You're simply home, with people who want you to feel good.</span>
+          </span>
+        </blockquote>
+        <cite class="testimonial-author">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">— Мария К., редовен гост от 2019</span>
+            <span class="lang-text" data-lang="en">— Maria K., regular guest since 2019</span>
+          </span>
+        </cite>
+      </div>
+      
+      <div class="testimonial section-transition">
+        <blockquote class="testimonial-quote">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">Празнувахме годишнина тук. Никакви фойерверки, никакви шумотевици — само хубава храна, топла атмосфера и усещането, че някой наистина се е погрижил за нас.</span>
+            <span class="lang-text" data-lang="en">We celebrated our anniversary here. No fireworks, no fuss — just wonderful food, warm atmosphere, and the feeling that someone truly cared for us.</span>
+          </span>
+        </blockquote>
+        <cite class="testimonial-author">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">— Петър и Елена, по препоръка на приятели</span>
+            <span class="lang-text" data-lang="en">— Petar and Elena, recommended by friends</span>
+          </span>
+        </cite>
+      </div>
+      
+      <div class="testimonial section-transition">
+        <blockquote class="testimonial-quote">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">Бояна си има своя магия. А Club 21 я улавя перфектно. Идвам тук, когато искам да избягам от всичко, без да напускам града.</span>
+            <span class="lang-text" data-lang="en">Boyana has its own magic. And Club 21 captures it perfectly. I come here when I want to escape everything without leaving the city.</span>
+          </span>
+        </blockquote>
+        <cite class="testimonial-author">
+          <span class="lang-container">
+            <span class="lang-text" data-lang="bg">— Димитър С., от квартала</span>
+            <span class="lang-text" data-lang="en">— Dimitar S., from the neighborhood</span>
+          </span>
+        </cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-logo">Club 21 — 
+      <span class="lang-container">
+        <span class="lang-text" data-lang="bg">Стара София</span>
+        <span class="lang-text" data-lang="en">Old Sofia</span>
+      </span>
+    </div>
+    <div class="footer-info">
+      <p>
+        <span class="lang-container">
+          <span class="lang-text" data-lang="bg">ул. Околовръстен път 51, Бояна</span>
+          <span class="lang-text" data-lang="en">51 Okolovrasten pat Street, Boyana</span>
+        </span>
+      </p>
+      <p>088 883 4278</p>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <span>© 2024</span>
+      <div class="footer-lang">
+        <button data-lang="bg">БГ</button>
+        <span class="lang-divider">·</span>
+        <button data-lang="en">EN</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-close" aria-label="Close"></button>
+      <button class="lightbox-nav lightbox-prev" aria-label="Previous"></button>
+      <img class="lightbox-image" src="" alt="Gallery image">
+      <button class="lightbox-nav lightbox-next" aria-label="Next"></button>
+      <div class="lightbox-counter"><span id="lightboxCurrent">1</span> / <span id="lightboxTotal">8</span></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════════
+       JAVASCRIPT
+       ═══════════════════════════════════════════════════════════════════════════ -->
+  <script>
+    // ═══════════════════════════════════════════════════════════════════════════
+    // LANGUAGE SWITCHER
+    // ═══════════════════════════════════════════════════════════════════════════
+    class LanguageSwitcher {
+      constructor() {
+        this.html = document.documentElement;
+        this.toggles = document.querySelectorAll('.lang-toggle, .footer-lang button');
+        this.currentLang = localStorage.getItem('club21-lang') || 'bg';
+        
+        this.init();
+      }
+      
+      init() {
+        this.html.setAttribute('data-lang', this.currentLang);
+        this.updateTitle();
+        
+        // Header toggle
+        document.querySelector('.lang-toggle')?.addEventListener('click', () => this.switch());
+        
+        // Footer toggles
+        document.querySelectorAll('.footer-lang button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const newLang = btn.getAttribute('data-lang');
+            if (newLang !== this.currentLang) {
+              this.setLang(newLang);
+            }
+          });
+        });
+      }
+      
+      switch() {
+        const newLang = this.currentLang === 'bg' ? 'en' : 'bg';
+        this.setLang(newLang);
+      }
+      
+      setLang(lang) {
+        this.html.classList.add('lang-transitioning');
+        
+        setTimeout(() => {
+          this.html.setAttribute('data-lang', lang);
+          this.currentLang = lang;
+          localStorage.setItem('club21-lang', lang);
+          this.updateTitle();
+        }, 50);
+        
+        setTimeout(() => {
+          this.html.classList.remove('lang-transitioning');
+        }, 550);
+      }
+      
+      updateTitle() {
+        document.title = this.currentLang === 'bg' 
+          ? 'Club 21 – Стара София | Ресторант в Бояна'
+          : 'Club 21 – Old Sofia | Restaurant in Boyana';
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // MOBILE MENU
+    // ═══════════════════════════════════════════════════════════════════════════
+    class MobileMenu {
+      constructor() {
+        this.toggle = document.querySelector('.menu-toggle');
+        this.overlay = document.getElementById('menuOverlay');
+        this.links = this.overlay?.querySelectorAll('.menu-link');
+        this.isOpen = false;
+        
+        this.init();
+      }
+      
+      init() {
+        this.toggle?.addEventListener('click', () => this.toggleMenu());
+        
+        this.links?.forEach(link => {
+          link.addEventListener('click', () => this.closeMenu());
+        });
+        
+        // Close on escape
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.isOpen) {
+            this.closeMenu();
+          }
+        });
+      }
+      
+      toggleMenu() {
+        this.isOpen ? this.closeMenu() : this.openMenu();
+      }
+      
+      openMenu() {
+        this.isOpen = true;
+        this.toggle?.classList.add('active');
+        this.overlay?.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      closeMenu() {
+        this.isOpen = false;
+        this.toggle?.classList.remove('active');
+        this.overlay?.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // HEADER SCROLL BEHAVIOR
+    // ═══════════════════════════════════════════════════════════════════════════
+    class HeaderScroll {
+      constructor() {
+        this.header = document.getElementById('header');
+        this.lastScroll = 0;
+        this.scrollThreshold = 100;
+        
+        this.init();
+      }
+      
+      init() {
+        let ticking = false;
+        
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              this.handleScroll();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        });
+      }
+      
+      handleScroll() {
+        const currentScroll = window.scrollY;
+        
+        // Add/remove scrolled class
+        if (currentScroll > 50) {
+          this.header.classList.add('scrolled');
+        } else {
+          this.header.classList.remove('scrolled');
+        }
+        
+        // Hide/show header on scroll direction
+        if (currentScroll > this.scrollThreshold) {
+          if (currentScroll > this.lastScroll) {
+            this.header.classList.add('hidden');
+          } else {
+            this.header.classList.remove('hidden');
+          }
+        }
+        
+        this.lastScroll = currentScroll;
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // INTERSECTION OBSERVERS (Section Transitions & Breath Text)
+    // ═══════════════════════════════════════════════════════════════════════════
+    class ScrollAnimations {
+      constructor() {
+        this.init();
+      }
+      
+      init() {
+        // Check for reduced motion preference
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.querySelectorAll('.section-transition').forEach(el => el.classList.add('in-view'));
+          document.querySelectorAll('.breath-container').forEach(el => el.classList.add('visible'));
+          return;
+        }
+        
+        // Section transitions
+        const sectionObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: '-40px' }
+        );
+        
+        document.querySelectorAll('.section-transition').forEach(section => {
+          sectionObserver.observe(section);
+        });
+        
+        // Breath text
+        const breathObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                breathObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.3, rootMargin: '-50px' }
+        );
+        
+        document.querySelectorAll('.breath-container').forEach(container => {
+          breathObserver.observe(container);
+        });
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // LIVING LIGHT EFFECT
+    // ═══════════════════════════════════════════════════════════════════════════
+    class LivingLight {
+      constructor() {
+        // Check for reduced motion
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        
+        this.sections = document.querySelectorAll('.section');
+        this.init();
+      }
+      
+      init() {
+        let ticking = false;
+        
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              this.update();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        });
+        
+        this.update();
+      }
+      
+      update() {
+        const viewportCenter = window.innerHeight / 2;
+        
+        this.sections.forEach(section => {
+          const rect = section.getBoundingClientRect();
+          const sectionCenter = rect.top + rect.height / 2;
+          const distance = Math.abs(sectionCenter - viewportCenter);
+          const maxDistance = window.innerHeight;
+          
+          const proximity = 1 - Math.min(distance / maxDistance, 1);
+          const brightness = 1 + (proximity * 0.025);
+          const warmth = proximity * 0.015;
+          
+          section.style.setProperty('--living-light-brightness', brightness);
+          section.style.setProperty('--living-light-warmth', warmth);
+        });
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SMOOTH SCROLL FOR ANCHOR LINKS
+    // ═══════════════════════════════════════════════════════════════════════════
+    class SmoothScroll {
+      constructor() {
+        this.init();
+      }
+      
+      init() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.querySelector(anchor.getAttribute('href'));
+            
+            if (target) {
+              const headerOffset = 80;
+              const elementPosition = target.getBoundingClientRect().top;
+              const offsetPosition = elementPosition + window.scrollY - headerOffset;
+              
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+              });
+            }
+          });
+        });
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // INITIALIZE
+    // ═══════════════════════════════════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+      new LanguageSwitcher();
+      new MobileMenu();
+      new HeaderScroll();
+      new ScrollAnimations();
+      new LivingLight();
+      new SmoothScroll();
+
+      // Mobile Lightbox (only on mobile)
+      if (window.innerWidth < 768) {
+        new MobileLightbox();
+      }
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // MOBILE LIGHTBOX
+    // ═══════════════════════════════════════════════════════════════════════════
+    class MobileLightbox {
+      constructor() {
+        this.lightbox = document.getElementById('lightbox');
+        this.image = this.lightbox.querySelector('.lightbox-image');
+        this.closeBtn = this.lightbox.querySelector('.lightbox-close');
+        this.prevBtn = this.lightbox.querySelector('.lightbox-prev');
+        this.nextBtn = this.lightbox.querySelector('.lightbox-next');
+        this.currentSpan = document.getElementById('lightboxCurrent');
+        this.totalSpan = document.getElementById('lightboxTotal');
+        
+        this.galleryItems = document.querySelectorAll('.gallery-item img');
+        this.currentIndex = 0;
+        this.images = Array.from(this.galleryItems).map(img => img.src);
+        
+        this.totalSpan.textContent = this.images.length;
+        
+        this.init();
+      }
+      
+      init() {
+        // Open lightbox on image click
+        this.galleryItems.forEach((img, index) => {
+          img.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.open(index);
+          });
+        });
+        
+        // Close button
+        this.closeBtn.addEventListener('click', () => this.close());
+        
+        // Navigation
+        this.prevBtn.addEventListener('click', () => this.prev());
+        this.nextBtn.addEventListener('click', () => this.next());
+        
+        // Close on background click
+        this.lightbox.addEventListener('click', (e) => {
+          if (e.target === this.lightbox || e.target.classList.contains('lightbox-content')) {
+            this.close();
+          }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+          if (!this.lightbox.classList.contains('active')) return;
+          
+          if (e.key === 'Escape') this.close();
+          if (e.key === 'ArrowLeft') this.prev();
+          if (e.key === 'ArrowRight') this.next();
+        });
+        
+        // Swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        this.lightbox.addEventListener('touchstart', (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        this.lightbox.addEventListener('touchend', (e) => {
+          touchEndX = e.changedTouches[0].screenX;
+          this.handleSwipe(touchStartX, touchEndX);
+        });
+      }
+      
+      handleSwipe(startX, endX) {
+        const threshold = 50;
+        const diff = startX - endX;
+        
+        if (Math.abs(diff) > threshold) {
+          if (diff > 0) {
+            this.next();
+          } else {
+            this.prev();
+          }
+        }
+      }
+      
+      open(index) {
+        this.currentIndex = index;
+        this.updateImage();
+        this.lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      close() {
+        this.lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      
+      prev() {
+        this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+        this.updateImage();
+      }
+      
+      next() {
+        this.currentIndex = (this.currentIndex + 1) % this.images.length;
+        this.updateImage();
+      }
+      
+      updateImage() {
+        this.image.src = this.images[this.currentIndex];
+        this.currentSpan.textContent = this.currentIndex + 1;
+      }
+    }
+  </script>
+
+</body>
+</html>
